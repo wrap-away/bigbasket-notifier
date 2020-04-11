@@ -11,6 +11,7 @@ class Notifier:
     LOGIN_ENDPOINT = "mapi/v4.0.0/member-svc/login/"
     CART_ENDPOINT = "basket/?ver=1"
     AVAILABILITY_ENDPOINT = "co/update-po/"
+    EXTRA_CHECK_ENDPOINT = "/co/delivery-preferences-new/"
 
     def __init__(self, phone_number: str, session_pickle_filename: str, load_session: bool = False) -> None:
         logger.log("info", "Instantiating Notifier...")
@@ -96,8 +97,12 @@ class Notifier:
             logger.log("info", "No delivery slot is found.")
             return False, resp
         else:
-            logger.log("warning", "Delivery slot is found!")
-            return True, resp
+            status = self.visit_extra_delivery_slot_check()
+            if status:
+                logger.log("warning", "Delivery slot is found!")
+                return True, resp
+            logger.log("info", "No delivery slot is found.")
+            return False, resp
 
     def visit_cart_page_and_get_address_id(self) -> str:
         logger.log("info", "Visiting cart page...")
@@ -105,6 +110,16 @@ class Notifier:
         addr_id = self._find_address_id(resp.text)
         logger.log("info", "Address Id found")
         return addr_id
+
+    def visit_extra_delivery_slot_check(self) -> bool:
+        logger.log("info", "Visiting extra delivery slot check...")
+        resp = self.session.get(self.BASE_URL + self.EXTRA_CHECK_ENDPOINT, headers=self.headers)
+        if not resp.ok:
+            return False
+        data = resp.json()
+        if 'details' in data and 'checkout_slot_failure_message' in data['details'] and "unfortunately" in data['details']['checkout_slot_failure_message'].lower():
+            return False
+        return True
 
     @staticmethod
     def _find_address_id(html: str) -> str:
