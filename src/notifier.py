@@ -11,7 +11,7 @@ class Notifier:
     LOGIN_ENDPOINT = "mapi/v4.0.0/member-svc/login/"
     CART_ENDPOINT = "basket/?ver=1"
     AVAILABILITY_ENDPOINT = "co/update-po/"
-    EXTRA_CHECK_ENDPOINT = "/co/delivery-preferences-new/"
+    EXTRA_CHECK_ENDPOINT = "co/delivery-preferences-new/"
 
     def __init__(self, phone_number: str, session_pickle_filename: str, load_session: bool = False) -> None:
         logger.log("info", "Instantiating Notifier...")
