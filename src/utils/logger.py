@@ -10,7 +10,7 @@ class Logger:
             format='%(asctime)s - %(levelname)s - %(message)s',
             datefmt='%d-%b-%y %H:%M:%S',
         )
-        logging.getLogger().setLevel(logging.INFO)
+        logging.getLogger().setLevel(logging.WARNING)
         logging.getLogger().addHandler(logging.StreamHandler())
         self.level_int_mapping = {
             "critical": 50,
@@ -21,6 +21,7 @@ class Logger:
         }
 
     def log(self, level: str, message: str) -> bool:
+        print(message)
         logging.log(self.level_int_mapping[level.lower()], message)
         return True
 

@@ -23,10 +23,13 @@ This program helps you to notify whenever a slot becomes available to order your
 
 ## Features
 
-- Program only uses `requests` library without any js-side scraping.
+- Cross platform system wide notifications.
 - You can login via OTP all by the terminal itself.
 - Ability to save your sessions allowing you to login only once.
 - Logging enabled by default for better debugging.
+- Configuration flexibility regarding various options.
+- Program doesn't do any javascript-rendering via headless browsers or anything.
+- Polling is done via API endpoints rather than relying on scraping improving stability.
 
 ## Installation
 
@@ -51,13 +54,17 @@ This program helps you to notify whenever a slot becomes available to order your
 
 ### Authentication Setup
 
-1. Add in your phone_number to `config.ini` file under APP section.
+1. fill in your `phone_number` in `config.ini` file under APP section.
+2. Change `interval` in `config.ini` file to the interval minutes in which you want to check for delivery slot.
+    - Default: 10 minutes - such that after every 10 minutes BigBasket will be polled to check if delivery slot has become available.
 
 ## Usage
 
 1. Login to BigBasket by using: `python login.py`
     - It will ask for OTP where you could give it via terminal.
 2. Start checking for delivery spots using: `python check_if_delivery_slot_available.py`
+    - As soon as a delivery slot is found, your OS will be pinged with a system notification to let you know about it.
+    - Logs at `app.log` will also write an entry regarding it as well.
 
 ## Application
 
@@ -67,8 +74,8 @@ This program helps you to notify whenever a slot becomes available to order your
 
 ## Todo
 
-- [ ] Create a more robust CLI component.
-- [ ] Schedule checking for delivery slots. (can use cronjob but would prefer a native library)
+- [x] Create a more robust CLI component.
+- [x] Schedule checking for delivery slots. (can use cronjob but would prefer a native library)
 - [ ] Create endpoint automation of address switching in an account.
 - [ ] Create a pip package for better accessibility towards developers integrating it with other notification channels.
 - [ ] Build a wrapper using the underlying technology to create a country-wide delivery slots notifier per city.

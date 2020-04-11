@@ -96,7 +96,7 @@ class Notifier:
             logger.log("info", "No delivery slot is found.")
             return False, resp
         else:
-            logger.log("info", "Delivery slot is found.")
+            logger.log("warning", "Delivery slot is found.")
             return True, resp
 
     def visit_cart_page_and_get_address_id(self) -> str:
