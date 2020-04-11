@@ -12,6 +12,7 @@ A python program written to notify you whenever a delivery slot becomes availabl
 - [Applications](#applications)
 - [TODO](#todo)
 
+![](screenshots/demo.gif)
 
 ## Motivation
 

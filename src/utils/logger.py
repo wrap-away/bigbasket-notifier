@@ -11,7 +11,6 @@ class Logger:
             datefmt='%d-%b-%y %H:%M:%S',
         )
         logging.getLogger().setLevel(logging.WARNING)
-        logging.getLogger().addHandler(logging.StreamHandler())
         self.level_int_mapping = {
             "critical": 50,
             "error": 40,
