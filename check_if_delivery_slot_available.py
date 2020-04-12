@@ -1,10 +1,29 @@
 import time
 import schedule
+import functools
 from plyer import notification
 from src.notifier import Notifier
+from src.utils.logger import logger
 from src.utils.configurer import config
 
 
+def catch_exceptions(cancel_on_failure=False):
+    def catch_exceptions_decorator(job_func):
+        @functools.wraps(job_func)
+        def wrapper(*args, **kwargs):
+            try:
+                return job_func(*args, **kwargs)
+            except:
+                import traceback
+                logger.log("critical", traceback.format_exc())
+                if cancel_on_failure:
+                    logger.log("warning", "Job Cancelled due to an error.")
+                    return schedule.CancelJob
+        return wrapper
+    return catch_exceptions_decorator
+
+
+@catch_exceptions(cancel_on_failure=True)
 def job(notifier: Notifier, system_notifier: notification, delay: int = 2):
     """
     Job to check if a delivery slot gets available for the default selected address in your bigbasket website.
@@ -31,6 +50,7 @@ if __name__ == "__main__":
         config.get_configuration('session_pickle_filename', "SYSTEM"),
         load_session=True
     )
+    job(n, notification)
     schedule.every(
         int(config.get_configuration("interval", "APP"))
     ).minutes.do(job, n, notification)
