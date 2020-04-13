@@ -95,7 +95,7 @@ class Notifier:
         data = resp.json()
         if data['status'] == "failure":
             logger.log("info", "No delivery slot is found.")
-            return True, resp
+            return False, resp
         else:
             return True, resp
 
