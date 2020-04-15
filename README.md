@@ -8,6 +8,8 @@ A python program written to notify you whenever a delivery slot becomes availabl
     - [Pre-Requisites](#pre-requisites)
     - [Application Setup](#application-setup)
     - [Authentication Setup](#authentication-setup)
+        - [OS Channel](#os-channel)
+        - [Telegram Channel](#telegram-channel)
 - [Usage](#usage)
 - [Applications](#applications)
 - [TODO](#todo)
@@ -25,6 +27,7 @@ This program helps you to notify whenever a slot becomes available to order your
 ## Features
 
 - Cross platform system wide notifications.
+- Telegram Bot integrated.
 - You can login via OTP all by the terminal itself.
 - Ability to save your sessions allowing you to login only once.
 - Logging enabled by default for better debugging.
@@ -59,6 +62,26 @@ This program helps you to notify whenever a slot becomes available to order your
 2. Change `interval` in `config.ini` file to the interval minutes in which you want to check for delivery slot.
     - Default: 10 minutes - such that after every 10 minutes BigBasket will be polled to check if delivery slot has become available.
 
+#### OS Channel
+
+Program is already configured to use system notifier such that whenever a delivery slot is found, it will notify you
+with a notification through your OS (Windows/Linux/Mac OSX). 
+
+- However, you can disable it (in case you're deploying it to cloud or an instance that doesn't have GUI implementation)
+by changing `status` under `OS` section in `config.ini` file from `True` to `False`
+
+#### Telegram Channel
+
+In order to use Telegram to notify you whenever a delivery slot is found, carry out these instructions as follows:
+
+- Create a bot using: https://core.telegram.org/bots#6-botfather
+- Once finished, copy the provided API (example: `110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw`) to `token` in 
+`config.ini` file under the section `TELEGRAM`
+- Change the `status` in `config.ini` file from `False` to `True` under `TELEGRAM` section.
+- Run `python telegram_setup.py`
+- Go to your newly created bot and send `/start` from the account where you would like to receive notifications.
+- Done, Now Program will automatically notify you via telegram channel whenever a delivery slot is found!
+
 ## Usage
 
 1. Login to BigBasket by using: `python login.py`
@@ -77,6 +100,5 @@ This program helps you to notify whenever a slot becomes available to order your
 
 - [x] Create a more robust CLI component.
 - [x] Schedule checking for delivery slots. (can use cronjob but would prefer a native library)
+- [x] Create a telegram bot integration.
 - [ ] Create endpoint automation of address switching in an account.
-- [ ] Create a pip package for better accessibility towards developers integrating it with other notification channels.
-- [ ] Build a wrapper using the underlying technology to create a country-wide delivery slots notifier per city.
