@@ -58,16 +58,16 @@ def job(notifier: Notifier, delay: int, system_notifier, telegram_notifier):
     if not status:
         logger.log("warning", "No delivery slot was found.")
         return None
-    logger.log("critical", "Delivery slot is found!")
+    success_message = "A free delivery slot is found for your address!"
+    logger.log("critical", success_message)
     if system_notifier:
         system_notifier.notify(
             title='BigBasket Notifier',
-            message='A free delivery slot is found for your address',
+            message=success_message,
             app_name='bigbasket-notifier'
         )
     if telegram_notifier:
-        telegram_notifier.notify(config.get_configuration('chat_id', "TELEGRAM"),
-                                 "A delivery slot is maybe found.")
+        telegram_notifier.notify(config.get_configuration('chat_id', "TELEGRAM"), success_message)
     return None
 
 

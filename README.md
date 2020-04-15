@@ -60,7 +60,7 @@ This program helps you to notify whenever a slot becomes available to order your
 
 1. fill in your `phone_number` in `config.ini` file under APP section.
 2. Change `interval` in `config.ini` file to the interval minutes in which you want to check for delivery slot.
-    - Default: 10 minutes - such that after every 10 minutes BigBasket will be polled to check if delivery slot has become available.
+    - Default: 5 minutes - such that after every 10 minutes BigBasket will be polled to check if delivery slot has become available.
 
 #### OS Channel
 
