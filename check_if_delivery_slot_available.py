@@ -54,6 +54,7 @@ def job(notifier: Notifier, delay: int, system_notifier, telegram_notifier):
     if not initial_status:
         return None
     logger.log("warning", "Maybe a delivery slot is found.")
+    time.sleep(delay)
     status = notifier.visit_extra_delivery_slot_check()
     if not status:
         logger.log("warning", "No delivery slot was found.")
