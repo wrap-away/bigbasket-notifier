@@ -97,12 +97,7 @@ class Notifier:
             logger.log("info", "No delivery slot is found.")
             return False, resp
         else:
-            status = self.visit_extra_delivery_slot_check()
-            if status:
-                logger.log("warning", "Delivery slot is found!")
-                return True, resp
-            logger.log("info", "No delivery slot is found.")
-            return False, resp
+            return True, resp
 
     def visit_cart_page_and_get_address_id(self) -> str:
         logger.log("info", "Visiting cart page...")

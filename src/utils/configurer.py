@@ -14,9 +14,12 @@ class Configurer:
         return os.path.abspath(os.path.join(os.path.dirname(__file__),
                                             os.pardir, os.pardir, filename))
 
-    def get_configuration(self, key: str, section: str):
+    def get_configuration(self, key: str, section: str, is_boolean: bool = False):
         try:
-            return self.config[section][key]
+            value = self.config[section][key]
+            if is_boolean:
+                return self.boolean(value, key)
+            return value
         except KeyError:
             print("key named: {} wasn't provided." % key)
             return False
@@ -27,6 +30,14 @@ class Configurer:
             self.config.write(configfile)
             configfile.close()
         return True
+
+    @staticmethod
+    def boolean(value, key):
+        if value.lower() == 'true':
+            return True
+        if value.lower() == 'false':
+            return False
+        print('Please provide either True or False for the key: {0}'.format(key))
 
 
 config = Configurer()
