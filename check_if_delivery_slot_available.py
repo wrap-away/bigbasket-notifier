@@ -8,12 +8,12 @@ from src.utils.configurer import config
 
 
 def get_channels():
-    telegram_status = bool(config.get_configuration('status', "TELEGRAM"))
+    telegram_status = config.get_configuration('status', "TELEGRAM", is_boolean=True)
     if telegram_status:
         telegram_n = TelegramNotifier(config.get_configuration('token', "TELEGRAM"))
     else:
         telegram_n = None
-    os_status = bool(config.get_configuration('status', "OS"))
+    os_status = config.get_configuration('status', "OS", is_boolean=True)
     if os_status:
         from plyer import notification
     else:
