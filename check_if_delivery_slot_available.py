@@ -1,10 +1,12 @@
 import time
 import schedule
 import functools
+import traceback
 from src.notifier import Notifier
-from src.telegram_notifier import TelegramNotifier
 from src.utils.logger import logger
 from src.utils.configurer import config
+from requests.exceptions import ConnectionError
+from src.telegram_notifier import TelegramNotifier
 
 
 def get_channels():
@@ -27,9 +29,16 @@ def catch_exceptions(cancel_on_failure=False):
         def wrapper(*args, **kwargs):
             try:
                 return job_func(*args, **kwargs)
+            except IndexError:
+                logger.log("critical", "Need to run login.py script since session is either outdated or never created.")
+            except ConnectionError:
+                logger.log("critical", "BigBasket didn't respond well.")
             except:
-                import traceback
                 logger.log("critical", traceback.format_exc())
+                logger.log("critical", "Please report the developer at "
+                                       "https://github.com/wrap-away/bigbasket-notifier/issues "
+                                       "to inform him about this error.")
+            finally:
                 if cancel_on_failure:
                     logger.log("warning", "Job Cancelled due to an error.")
                     return schedule.CancelJob
