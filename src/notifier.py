@@ -13,10 +13,12 @@ class Notifier:
     AVAILABILITY_ENDPOINT = "co/update-po/"
     EXTRA_CHECK_ENDPOINT = "co/delivery-preferences-new/"
 
-    def __init__(self, phone_number: str, session_pickle_filename: str, load_session: bool = False) -> None:
+    def __init__(self, phone_number: str, session_pickle_filename: str, load_session: bool = False,
+                 debug: bool = False) -> None:
         logger.log("info", "Instantiating Notifier...")
         self.phone_number = phone_number
         self.session_pickle_filename = session_pickle_filename
+        self.debug = debug
         if load_session:
             self.session = self.load_session()
         else:
@@ -114,6 +116,9 @@ class Notifier:
         data = resp.json()
         if 'details' in data and 'checkout_slot_failure_message' in data['details'] and "unfortunately" in data['details']['checkout_slot_failure_message'].lower():
             return False
+        if self.debug:
+            with open("response.txt", "a") as resp_file:
+                resp_file.write(resp.text)
         return True
 
     @staticmethod

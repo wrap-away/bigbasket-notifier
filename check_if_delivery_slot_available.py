@@ -85,7 +85,8 @@ if __name__ == "__main__":
     n = Notifier(
         config.get_configuration('phone_number', "APP"),
         config.get_configuration('session_pickle_filename', "SYSTEM"),
-        load_session=True
+        load_session=True,
+        debug=config.get_configuration('debug', "DEV")
     )
     telegram, system_notification = get_channels()
     job(n, 2, system_notification, telegram)
