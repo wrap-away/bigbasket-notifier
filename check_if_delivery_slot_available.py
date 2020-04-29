@@ -38,10 +38,9 @@ def catch_exceptions(cancel_on_failure=False):
                 logger.log("critical", "Please report the developer at "
                                        "https://github.com/wrap-away/bigbasket-notifier/issues "
                                        "to inform him about this error.")
-            finally:
-                if cancel_on_failure:
-                    logger.log("warning", "Job Cancelled due to an error.")
-                    return schedule.CancelJob
+            if cancel_on_failure:
+                logger.log("warning", "Job Cancelled due to an error.")
+                return schedule.CancelJob
         return wrapper
     return catch_exceptions_decorator
 
